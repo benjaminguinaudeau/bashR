@@ -1,0 +1,24 @@
+---
+title: "main"
+author: "Benjamin"
+date: '2019-04-15'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Dependencies
+
+```{r}
+library(keyring)
+```
+
+
+```{r}
+devtools::document()
+devtools::load_all()
+
+```
+
