@@ -1,22 +1,28 @@
 #' sudo$
 #' @description This function executes the given command as sudo
 #' @param cmd A bash command to execute as sudo
+#' @param env_var Should the password be saved for further use
 #' @export
 
 sudo <- function(cmd,
                  intern = F,
                  ignore.stdout = F,
-                 ignore.stderr = F){
+                 ignore.stderr = F,
+                 env_var = T){
 
-  if(class(try(keyring::key_get("SUDO_PASSWORD")))[1] == "try-error"){
+  if(class(try(keyring::key_get("SUDO_PASSWORD"), silent = T))[1] == "try-error"){
     keyring::key_set("SUDO_PASSWORD")
   }
 
-  system(glue::glue("{ keyring::key_set('SUDO_PASSWORD') } | { cmd }"),
+  out <- system(glue::glue("echo { keyring::key_get('SUDO_PASSWORD') } | sudo -S { cmd }"),
          intern = intern,
          ignore.stdout = ignore.stdout,
          ignore.stderr = ignore.stderr)
-}
 
+  if(!env_var) key_delete("SUDO_PASSWORD")
+
+  return(out)
+}
+sudo("ls", intern = T)
 
 
