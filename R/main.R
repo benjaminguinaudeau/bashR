@@ -10,16 +10,16 @@ sudo <- function(cmd,
                  ignore.stderr = F,
                  env_var = T){
 
-  if(class(try(keyring::key_get("SUDO_PASSWORD"), silent = T))[1] == "try-error"){
-    keyring::key_set("SUDO_PASSWORD")
+  if(class(try(keyring::key_get("SUDO_PASS"), silent = T))[1] == "try-error"){
+    keyring::key_set("SUDO_PASS")
   }
 
-  out <- system(glue::glue("echo { keyring::key_get('SUDO_PASSWORD') } | sudo -S { cmd }"),
+  out <- system(glue::glue("echo { keyring::key_get('SUDO_PASS') } | sudo -S { cmd }"),
          intern = intern,
          ignore.stdout = ignore.stdout,
          ignore.stderr = ignore.stderr)
 
-  if(!env_var) key_delete("SUDO_PASSWORD")
+  if(!env_var) key_delete("SUDO_PASS")
 
   return(out)
 }

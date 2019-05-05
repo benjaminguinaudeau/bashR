@@ -23,3 +23,66 @@ devtools::install()
 
 ```
 
+MAILTO="bguinaudeau@gmail.com"
+1 2 3 4 5 /root/backup.sh >/dev/null 2>&1
+
+1: Minute (0-59)
+2: Hours (0-23)
+3: Day (0-31)
+4: Month (0-12 [12 == December])
+5: Day of the week(0-7 [7 or 0 == sunday])
+/path/to/command – Script or command name to schedule
+
+
+Special string	Meaning
+@reboot	Run once, at startup.
+@yearly	Run once a year, “0 0 1 1 *”.
+@annually	(same as @yearly)
+@monthly	Run once a month, “0 0 1 * *”.
+@weekly	Run once a week, “0 0 * * 0”.
+@daily	Run once a day, “0 0 * * *”.
+@midnight	(same as @daily)
+@hourly	Run once an hour, “0 * * * *”.
+
+```{r}
+
+exec <- function(string, cmd = F, ...) if(cmd == T) return(string) else return(system(string, ...))
+append <- function(path, string, cmd = F) exec(glue::glue("echo { string } >> { path }"), cmd = cmd)
+source_cli <- function(path, cmd = F) exec(glue::glue("Rscript { path }"), cmd = cmd)
+current_user <- function() system("echo $USER", intern = T)
+
+source_cli("~/Downloads/a.R", cmd = T)
+
+append("~/Downloads/crontab", "1")
+script_path <- "~/Downloads/a.R"
+crontab_path <- "~/Downloads/crontab"
+
+add_crontab <- function(
+  user = current_user(),
+  script_path = NULL,
+  crontab_path = NULL,
+  meta = NULL,
+  min = "0-59/2", 
+  hour = "*",
+  date_day = "*",
+  date_month = "*",
+  day = "*", 
+  cmd = F,
+){
+  
+  command <- source_cli(script_path, cmd = T)
+  
+  if(!is.null(meta)){
+    time_pattern <- meta
+  } else {
+    time_pattern <- paste(min, hour, date_day, date_month, day)
+  }
+  
+  append(
+    crontab_path,
+    glue::glue("{ time_pattern } { user } { command }")
+  )
+}
+
+```
+
