@@ -4,11 +4,11 @@
 \alias{sudo}
 \title{sudo$}
 \usage{
-sudo(cmd, intern = F, ignore.stdout = F, ignore.stderr = F,
+sudo(command, intern = F, ignore.stdout = F, ignore.stderr = F,
   env_var = T)
 }
 \arguments{
-\item{cmd}{A bash command to execute as sudo}
+\item{command}{A bash command to execute as sudo}
 
 \item{env_var}{Should the password be saved for further use}
 }
