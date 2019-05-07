@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # Dependencies
 
 ```{r}
-library(keyring)
+keyring, glue
 ```
 
 

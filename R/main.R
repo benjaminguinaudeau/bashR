@@ -19,10 +19,8 @@ sudo <- function(cmd,
          ignore.stdout = ignore.stdout,
          ignore.stderr = ignore.stderr)
 
-  if(!env_var) key_delete("SUDO_PASS")
+  if(!env_var) keyring::key_delete("SUDO_PASS")
 
   return(out)
 }
-sudo("ls", intern = T)
-
 
