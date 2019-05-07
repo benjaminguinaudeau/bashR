@@ -46,11 +46,6 @@ Special string	Meaning
 
 ```{r}
 
-exec <- function(string, cmd = F, ...) if(cmd == T) return(string) else return(system(string, ...))
-append <- function(path, string, cmd = F) exec(glue::glue("echo { string } >> { path }"), cmd = cmd)
-source_cli <- function(path, cmd = F) exec(glue::glue("Rscript { path }"), cmd = cmd)
-current_user <- function() system("echo $USER", intern = T)
-
 source_cli("~/Downloads/a.R", cmd = T)
 
 append("~/Downloads/crontab", "1")
@@ -83,6 +78,8 @@ add_crontab <- function(
     glue::glue("{ time_pattern } { user } { command }")
   )
 }
+
+
 
 ```
 
