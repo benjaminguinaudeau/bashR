@@ -5,7 +5,7 @@
 \title{sudo$}
 \usage{
 sudo(command, intern = F, ignore.stdout = F, ignore.stderr = F,
-  env_var = T)
+  env_var = T, cmd = F)
 }
 \arguments{
 \item{command}{A bash command to execute as sudo}

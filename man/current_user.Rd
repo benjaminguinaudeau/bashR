@@ -4,7 +4,7 @@
 \alias{current_user}
 \title{current_user}
 \usage{
-current_user()
+current_user(intern = T, cmd = F, ...)
 }
 \description{
 current_user
