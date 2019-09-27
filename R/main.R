@@ -7,25 +7,38 @@
 sudo <- function(command,
                  intern = F,
                  ignore.stdout = F,
-                 ignore.stderr = F,
+                 ignore.stderr = T,
                  env_var = T,
                  cmd = F){
 
-  if(class(try(keyring::key_get("SUDO_PASS"), silent = T))[1] == "try-error"){
-    keyring::key_set("SUDO_PASS")
-  }
-
-  if(cmd){
-    out <- glue::glue("echo { keyring::key_get('SUDO_PASS') } | sudo -S { command }")
+  if(.Platform$OS.type == "windows"){
+    if(cmd){
+      out <- command
+    } else {
+      out <- exec(glue::glue("{ command }"),
+                  intern = intern,
+                  ignore.stdout = ignore.stdout,
+                  ignore.stderr = ignore.stderr)
+    }
   } else {
+    if(class(try(keyring::key_get("SUDO_PASS"), silent = T))[1] == "try-error"){
+      keyring::key_set("SUDO_PASS")
+    }
 
-    out <- exec(glue::glue("echo { keyring::key_get('SUDO_PASS') } | sudo -S { command }"),
-                intern = intern,
-                ignore.stdout = ignore.stdout,
-                ignore.stderr = ignore.stderr)
+    if(cmd){
+      out <- glue::glue("echo { keyring::key_get('SUDO_PASS') } | sudo -S { command }")
+    } else {
+
+      out <- exec(glue::glue("echo { keyring::key_get('SUDO_PASS') } | sudo -S { command }"),
+                  intern = intern,
+                  ignore.stdout = ignore.stdout,
+                  ignore.stderr = ignore.stderr)
+    }
+
+    if(!env_var) keyring::key_delete("SUDO_PASS")
   }
 
-  if(!env_var) keyring::key_delete("SUDO_PASS")
+
 
   return(out)
 }

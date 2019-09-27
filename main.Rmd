@@ -45,6 +45,14 @@ Special string	Meaning
 @hourly	Run once an hour, “0 * * * *”.
 
 ```{r}
+mail <- function(to, subject, messsage){
+  if(length(to) > 1){
+    to <- paste(to, collapse = ",")
+  }
+  
+  bashR::exec(glue::glue('echo \"{ mail }\" | mail -s { subject } { to }'))
+}
+
 
 source_cli("~/Downloads/a.R", cmd = T)
 
