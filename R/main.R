@@ -11,7 +11,7 @@ sudo <- function(command,
                  env_var = T,
                  cmd = F){
 
-  if(.Platform$OS.type == "windows"){
+  if(os() == "Windows"){
     if(cmd){
       out <- command
     } else {
@@ -50,12 +50,51 @@ ufw <- function(command, port, cmd = F, ...){
   sudo(glue::glue("ufw { command } { port }"), cmd = cmd, ...)
 }
 
-#' exec
+#' os
 #' @export
 
+os <- function() Sys.info()['sysname']
+
+#' exec
+#' @export
 exec <- function(string, cmd = F, ...){
-  if(cmd) return(string) else return(system(string, ...))
+
+  if(cmd){
+    return(string)}
+  else{
+    if(os() == "Windows"){
+      return(shell(string, ...))
+    }else {
+      return(system(string, ...))
+    }
+  }
 }
+
+#' run_as_job
+#' @export
+
+run_as_job <- function(.command, import_global = T, import_package = T, env_to_import = NULL, output = ".tmp.Rdata"){
+  if(import_global){env <- .GlobalEnv}
+  if(!is.null(env_to_import)){env <- env_to_import}
+  if(!exists("env")){env <- rlang::new_environment()}
+  if(import_package){packages <- (.packages())} else {packages <- "base"}
+
+  .command %>%
+    as.character %>%
+    .[2] %>%
+    stringr::str_remove_all("\\{|\\}") %>%
+    paste(paste(glue::glue("pacman::p_load({ packages})"), collapse = "\n"), ., 'save(out, file = ".tmp.Rdata")') %>%
+    stringr::str_trim(.) %>%
+    stringr::str_split("\n") %>%
+    .[[1]] %>%
+      writeLines("script_for_job")
+
+    rstudioapi::jobRunScript("script_for_job", workingDir = ".", importEnv = env)
+
+    load(".tmp.Rdata", env = globalenv())
+    message("Job was finished and result was load in global environment")
+}
+
 
 #' current_user
 #' @export
