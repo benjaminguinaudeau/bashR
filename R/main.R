@@ -73,7 +73,7 @@ exec <- function(string, cmd = F, ...){
 #' run_as_job
 #' @export
 
-run_as_job <- function(.command, import_global = T, import_package = T, env_to_import = NULL, output = ".tmp.Rdata"){
+run_as_job <- function(.command, import_global = F, import_package = T, env_to_import = NULL, output = ".tmp.Rdata"){
   if(import_global){env <- .GlobalEnv}
   if(!is.null(env_to_import)){env <- env_to_import}
   if(!exists("env")){env <- rlang::new_environment()}
@@ -83,7 +83,7 @@ run_as_job <- function(.command, import_global = T, import_package = T, env_to_i
     as.character %>%
     .[2] %>%
     stringr::str_remove_all("\\{|\\}") %>%
-    paste(paste(glue::glue("pacman::p_load({ packages})"), collapse = "\n"), ., 'save(out, file = ".tmp.Rdata")') %>%
+    paste(paste(glue::glue("pacman::p_load({ packages})"), collapse = "\n"), ., glue::glue('save(out, file = {output})')) %>%
     stringr::str_trim(.) %>%
     stringr::str_split("\n") %>%
     .[[1]] %>%
