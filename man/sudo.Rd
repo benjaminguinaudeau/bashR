@@ -4,7 +4,7 @@
 \alias{sudo}
 \title{sudo$}
 \usage{
-sudo(command, intern = F, ignore.stdout = F, ignore.stderr = F,
+sudo(command, intern = F, ignore.stdout = F, ignore.stderr = T,
   env_var = T, cmd = F)
 }
 \arguments{
