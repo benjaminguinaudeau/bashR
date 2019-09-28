@@ -75,28 +75,34 @@ exec <- function(string, cmd = F, ...){
 
 run_as_job <- function(.command, import_global = F, import_package = T, env_to_import = NULL, output = ".tmp.Rdata"){
   current_env <- rlang::current_env()
+
   if(import_global){.GlobalEnv %>% as.list %>% imap(~{current_env[[.y]] <- .x})}
   if(!is.null(env_to_import)){env_to_import %>% as.list %>% imap(~{current_env[[.y]] <- .x})}
   if(!exists("env")){env <- rlang::new_environment()}
   if(import_package){packages <- (.packages())} else {packages <- "base"}
 
-  if(fs::file_exists(".tmp.Rdata")){fs::file_delete("script_for_job")}
+  if(fs::file_exists(output)){fs::file_delete(output)}
+  if(fs::file_exists("script_for_job")){fs::file_delete("script_for_job")}
+
   .command %>%
     as.character %>%
     .[2] %>%
     stringr::str_remove_all("\\{|\\}") %>%
     paste(paste(glue::glue("pacman::p_load({ packages})"), collapse = "\n"), .,
-          glue::glue('if(exists("out")) save(out, file = {output})')) %>%
+          glue::glue('if(exists("out")){save(out, file = "[output]")}',.open = "[", .close = "]")) %>%
     stringr::str_trim(.) %>%
     stringr::str_split("\n") %>%
     .[[1]] %>%
-    writeLines(con = "script_for_job")
+    writeLines("script_for_job")
 
-  rstudioapi::jobRunScript("script_for_job", workingDir = ".", importEnv = env)
-  if(fs::file_exists(".tmp.Rdata")){load(".tmp.Rdata", env = .GlobalEnv())}
-  message("Job was finished and result was load in global environment")
+  rstudioapi::jobRunScript("script_for_job", workingDir = getwd(), importEnv = env)
+
+  if(fs::file_exists(output)){load(output)}
+  if(fs::file_exists(output)){fs::file_delete(outpu)}
+  # if(fs::file_exists("script_for_job")){fs::file_delete("script_for_job")}
+
+  if(exists("out")){return(out)}
 }
-
 
 #' current_user
 #' @export
