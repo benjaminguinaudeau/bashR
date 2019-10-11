@@ -113,10 +113,10 @@ wait <- function(mean = 1, sd = .1, verbose = F){
   if(verbose){message("Waiting ", round(wait_time, 2), " seconds")}
 }
 
-#' %message%
+#' message_pipe
 #' @export
 
-message_p <- function(.tbl, to_print = ""){
+`%message%` <- function(.tbl, to_print = ""){
   if(is.character(to_print)){
     message(to_print)
   }
