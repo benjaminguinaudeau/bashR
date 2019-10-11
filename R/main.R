@@ -108,7 +108,7 @@ run_as_job <- function(.command, import_global = F, import_package = T, env_to_i
 #' @export
 
 wait <- function(mean = 1, sd = .1, verbose = F){
-  wait_time <- rnorm(1, mean, sd)
+  wait_time <- abs(rnorm(1, mean, sd))
   Sys.sleep(wait_time)
   if(verbose){message("Waiting ", round(wait_time, 2), " seconds")}
 }
@@ -137,6 +137,7 @@ wait <- function(mean = 1, sd = .1, verbose = F){
 #' @export
 simule_map <- function(.list, index = 1, env = .GlobalEnv){
   env$.x <- .list[[index]]
+  env$.y <- names(.list)[index]
   return(.x)
 }
 

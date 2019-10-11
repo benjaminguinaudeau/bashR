@@ -1,0 +1,163 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+pacman::p_load(tidyverse, rstudioapi)
+```
+
+```{r}
+ping <- function(){
+  term <- rstudioapi::terminalExecute("ping rstudio.com")
+  term <- rstudioapi::terminalExecute("ls")
+  term <- rstudioapi::terminalCreate()
+  rstudioapi::termin
+  rstudioapi::terminalSend(term, "")
+  rstudioapi::terminalActivate(term)
+  rstudioapi::terminalExitCode(term)
+  rstudioapi::terminalBusy(term)
+  rstudioapi::terminalContext(term)
+  rstudioapi::terminalClear(term)
+  rstudioapi::terminalKill(term)
+  rstudioapi::terminalRunning(term)
+  rstudioapi::terminalBuffer(id = term)
+  
+  
+}
+
+ping()
+termId <- rstudioapi::terminalExecute("prompt")
+
+# If viewing the result in the terminal buffer is sufficient,
+# then no need to do anything else. The command will continue
+# running and displaying its results without blocking the R session.
+
+# To obtain the results programmatically, wait for it to finish.
+while (is.null(rstudioapi::terminalExitCode(termId))) {
+  Sys.sleep(0.1)
+}
+
+result <- rstudioapi::terminalBuffer(termId)
+
+# Delete the buffer and close the session in the IDE
+rstudioapi::terminalKill(termId)
+
+system()
+
+term <- rstudioapi::terminalCreate(show = F)
+term %>% terminalClear()
+term %>% terminalSend("cd /\n")
+term %>% terminalSend("ls\n")
+
+
+
+a <- 
+  
+  paste(collapse = "\n")
+
+cat(a)  
+
+term <- R6::R6Class("terminal", 
+                    public = list(
+                      id = NULL, 
+                      prefix = NULL, 
+                      initialize = function(){
+                        id <- self$id <- rstudioapi::terminalCreate(show = F)
+                        bashR::wait(1)
+                        self$prefix <-  self$buf() %>%
+                          tail(1) %>%
+                          stringr::str_trim() %>%
+                          stringr::str_extract("[^\\s]+$")
+                      }, 
+                      exec = function(cmd = ""){
+                        cmd <- shQuote(cmd, type = "sh")
+                        self$id %>% rstudioapi::terminalSend(glue::glue("{cmd}\n"))
+                      }, 
+                      buf = function(){rstudioapi::terminalBuffer(id = self$id)},
+                      is_busy = function(){rstudioapi::terminalBusy(id = self$id)},
+                      show = function(cat = F){
+
+                      }
+                    ),
+                    private = list()
+)
+
+if(t$is_busy()){
+  t$buf() %>%
+    paste(collapse = "\n")
+}
+t <- term$new()
+t$exec("ls")
+t$is_busy()
+t$buf()
+tail(1:10, 1)
+a <- t$id %>%
+  terminalBuffer() %>%
+  str_split(t$prefix)
+t$prefix
+
+t$id %>% rstudioapi::terminalBuffer() %>%
+                          tail(1) %>%
+                          stringr::str_trim() %>%
+                          stringr::str_extract("[^\\s]+$")
+a %>%
+  str_replace_all(paste0("^.+", fixed(t$prefix)), "\\t\\n\\s")
+  str_split("\n")
+  
+  
+a %>% str_detect(shQuote(t$prefix))
+  furrr::future_imap()
+  
+get_process <- function(pattern = "."){
+  system("ps", intern = T) %>%
+  purrr::keep(stringr::str_detect, pattern = pattern)
+}  
+  
+proc <- get_process("/bin/bash") %>%
+  str_extract("\\d+")
+
+system("tty")
+system("ls > /dev/ttys034", intern = T)
+system("ls\n\n > /dev/ttys004 \n", intern = T)
+system('cd / && ls \n > /dev/ttys004', intern = T)
+system('cd ~ && echo "e" > mouse_log.txt \n > /dev/ttys004', intern = T)
+system('cat ~/mouse_log.txt \n > /dev/ttys004', intern = T)
+system('script "ssh -p 2222 simon@213.152.100.65"', intern = T)
+
+a <- mtcars[,1]
+a %>%
+  iwalk(~{
+    cat("\r", paste0(rep("-", as.numeric(.y)), collapse = ""))
+    Sys.sleep(1)
+    utils::flush.console()
+  })
+map <- function(.x,.f,  ..., progress = T){
+  params <- list(...)
+  le <- length(.x)
+  .x %>%
+    imap(~{
+      cat("\r", paste0(rep(".", as.numeric(.y)), collapse = ""))
+      .x %>%
+        list %>%
+        purrr::map(.f = .f) %>%
+        .[[1]]
+      Sys.sleep(1)
+      utils::flush.console()
+    })
+}
+
+1:10 %>% map(class, progress = T)
+
+system("\n > /dev/ttys004", intern = T)
+system("<enter> > /dev/ttys034", intern = T)
+
+system("\n > /dev/ttys034", intern = T)
+
+new <- get_process("bash")
+
+setdiff(orig, new)
+```
+
