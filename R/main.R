@@ -116,7 +116,7 @@ wait <- function(mean = 1, sd = .1, verbose = F){
 #' %message%
 #' @export
 
-`%message%` <- function(.tbl, to_print = ""){
+message_p <- function(.tbl, to_print = ""){
   if(is.character(to_print)){
     message(to_print)
   }
@@ -131,6 +131,7 @@ wait <- function(mean = 1, sd = .1, verbose = F){
 
   return(invisible(.tbl))
 }
+
 
 #' simule_map
 #' @export
