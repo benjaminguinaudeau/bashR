@@ -104,6 +104,41 @@ run_as_job <- function(.command, import_global = F, import_package = T, env_to_i
   if(exists("out")){return(out)}
 }
 
+#' wait
+#' @export
+
+wait <- function(mean = 1, sd = .1, verbose = F){
+  wait_time <- rnorm(1, mean, sd)
+  Sys.sleep(wait_time)
+  if(verbose){message("Waiting ", round(wait_time, 2), " seconds")}
+}
+
+#' %message%
+#' @export
+
+`%message%` <- function(.tbl, to_print = ""){
+  if(is.character(to_print)){
+    message(to_print)
+  }
+  if(is_formula(to_print) | is.function(to_print)){
+    mes <- .tbl %>%
+      list %>%
+      map(to_print) %>%
+      .[[1]]
+
+    message(mes)
+  }
+
+  return(invisible(.tbl))
+}
+
+#' simule_map
+#' @export
+simule_map <- function(.list, index = 1, env = .GlobalEnv){
+  env$.x <- .list[[index]]
+  return(.x)
+}
+
 #' current_user
 #' @export
 
@@ -138,10 +173,6 @@ chmod <- function(path, right, recursive = NULL, cmd, ...){
 #' @export
 
 move <- function(origin, desg, recursive = F, cmd = F){
-
-
   exec(glue::glue("cp { origin } { dest }"), cmd = T)
-
-
 }
 
