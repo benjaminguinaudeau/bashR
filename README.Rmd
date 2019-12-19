@@ -1,3 +1,7 @@
+---
+output: github_document
+---
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 # bashr <img src="man/figures/bashr_logo.jpeg" width="160px" align="right" />
 
@@ -31,4 +35,4 @@ Some usefull functions to execute some bash code in R
 
 ## Thanks
 
-A huge thank you to [Favstats](https://github.com/favstats) for designing each of the hex-stickers. 
+A huge thank you to [Favstats](https://github.com/favstats) for designing the hex-sticker. 
