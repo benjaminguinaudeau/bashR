@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
-
+library(bashR)
 ```
 
 ```{r, echo = FALSE, results='asis', eval = T}
@@ -31,6 +31,89 @@ cat(
 ```
 
 Some usefull functions to execute some bash code in R
+
+## Sudo
+
+Execute command as sudo
+
+``` r
+set_sudo("secret_sudo_password")
+sudo("ls")
+```
+
+## simule_map
+
+Useful to test the lambda for looping functions from the map family: 
+
+```{r}
+input <- c("a" = 1, "b" = 2, "c" = 3)
+input %>% bashR::simule_map(1)
+cat(".x is now: ", .x, "\n")
+cat(".y is now: ", .y, "\n")
+input %>% bashR::simule_map(3)
+cat(".x is now: ", .x, "\n")
+cat(".y is now: ", .y, "\n")
+
+input %>%
+  purrr::iwalk(~{cat("Value", .x, "is named", .y, "\n")})
+```
+
+```{r}
+
+```
+
+
+## Parse Curl request
+
+Parse a request, that was copied in chrome from DevTools > Network
+
+```{r}
+input <- r"(curl 'https://github.com/benjaminguinaudeau/' \
+  -H 'authority: github.com' \
+  -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
+  -H 'accept-language: en-GB,en;q=0.9' \
+  -H 'sec-ch-ua: "Google Chrome";v="107", "Chromium";v="107", "Not=A?Brand";v="24"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  -H 'sec-fetch-dest: document' \
+  -H 'sec-fetch-mode: navigate' \
+  -H 'sec-fetch-site: none' \
+  -H 'sec-fetch-user: ?1' \
+  -H 'upgrade-insecure-requests: 1' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36' \
+  --compressed
+  )"
+```
+
+
+```{r}
+parsed_request <- parse_curl_request(req_string = input, execute = T) %>% 
+  dplyr::glimpse()
+```
+
+
+```{r}
+parsed_request$headers
+```
+
+
+```{r}
+parsed_request$r_code
+```
+
+
+```{r}
+parsed_request$req
+```
+
+The code below test each header: given a testing function applied to the return request, it tests whether a header is required for the request. 
+
+```{r}
+test_headers(url = parsed_request$url, headers = parsed_request$headers[[1]], test_fun = status_code_is, code = 200) %>%
+  dplyr::glimpse()
+```
+
+
 
 
 ## Thanks

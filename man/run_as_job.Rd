@@ -4,8 +4,13 @@
 \alias{run_as_job}
 \title{run_as_job}
 \usage{
-run_as_job(.command, import_global = F, import_package = T,
-  env_to_import = NULL, output = ".tmp.Rdata")
+run_as_job(
+  .command,
+  import_global = F,
+  import_package = T,
+  env_to_import = NULL,
+  output = ".tmp.Rdata"
+)
 }
 \description{
 run_as_job
