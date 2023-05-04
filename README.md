@@ -3,14 +3,6 @@
 
 # bashr <img src="man/figures/bashr_logo.jpeg" width="160px" align="right" />
 
-    #> ✔ Setting active project to '/Users/benjaminguinaudeau/Library/CloudStorage/
-    #> GoogleDrive-ben.gui.spam@gmail.com/.My Drive/Konstanz/SideProjects/package/
-    #> bashR'
-
-[![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![](https://img.shields.io/github/languages/code-size/benjaminguinaudeau/bashR.svg)](https://github.com/benjaminguinaudeau/bashR)
-[![](https://img.shields.io/github/last-commit/benjaminguinaudeau/bashR.svg)](https://github.com/benjaminguinaudeau/bashR/commits/master)
-
 Some usefull functions to execute some bash code in R
 
 ## Sudo
@@ -20,6 +12,32 @@ Execute command as sudo
 ``` r
 set_sudo("secret_sudo_password")
 sudo("ls")
+```
+
+## simule_map
+
+Useful to test the lambda for looping functions from the map family:
+
+``` r
+input <- c("a" = 1, "b" = 2, "c" = 3)
+input %>% bashR::simule_map(1)
+#> [1] 1
+cat(".x is now: ", .x, "\n")
+#> .x is now:  1
+cat(".y is now: ", .y, "\n")
+#> .y is now:  a
+input %>% bashR::simule_map(3)
+#> [1] 3
+cat(".x is now: ", .x, "\n")
+#> .x is now:  3
+cat(".y is now: ", .y, "\n")
+#> .y is now:  c
+
+input %>%
+  purrr::iwalk(~{cat("Value", .x, "is named", .y, "\n")})
+#> Value 1 is named a 
+#> Value 2 is named b 
+#> Value 3 is named c
 ```
 
 ## Parse Curl request
@@ -101,10 +119,10 @@ parsed_request$r_code
 parsed_request$req
 #> [[1]]
 #> Response [https://github.com/benjaminguinaudeau/]
-#>   Date: 2022-11-24 10:20
+#>   Date: 2023-05-04 20:15
 #>   Status: 200
 #>   Content-Type: text/html; charset=utf-8
-#>   Size: 197 kB
+#>   Size: 219 kB
 #> 
 #> 
 #> <!DOCTYPE html>

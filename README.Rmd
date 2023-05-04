@@ -15,19 +15,19 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 library(bashR)
-```
-
-```{r, echo = FALSE, results='asis', eval = T}
 
 library(badger)
 
 git_repo <- "benjaminguinaudeau/bashR"
+```
 
-cat(
-  badge_lifecycle(),
-	badge_code_size(git_repo),
-	badge_last_commit(git_repo)
-)
+```{r, echo = FALSE, results='asis', eval = T}
+
+# cat(
+#   badge_lifecycle(),
+# 	badge_code_size(git_repo),
+# 	badge_last_commit(git_repo)
+# )
 ```
 
 Some usefull functions to execute some bash code in R
